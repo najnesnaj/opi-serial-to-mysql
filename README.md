@@ -1,4 +1,4 @@
-# rpiGPIOserial-to-mysql
+# opi-serial-to-mysql
 
 this is an adaptation from https://github.com/hubbsy/rpiGPIOserial-to-mysql.git 
 
