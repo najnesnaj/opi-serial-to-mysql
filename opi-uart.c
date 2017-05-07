@@ -12,13 +12,13 @@
 //#include "inc/rpi-uart.h"
 
 // TODO make this a commandline parameter, and default to 9600 instead of being forced to 9600
-//#define BAUDRATE B9600 JJ
+//#define BAUDRATE B9600 //JJ
 #define BAUDRATE B115200 
 
 extern int DEBUG;
 
 #define BUFFERSIZE 1024
-//#define MODEMDEVICE "/dev/ttyS1" // default file to access raspberry pi GPIO UART
+//#define MODEMDEVICE "/dev/ttyS1" // default file to access orange pi GPIO UART
 char MODEMDEVICE[BUFFERSIZE];
 
 // raspberry pi uart functions
@@ -73,7 +73,8 @@ int rpi_uart_setup(int * filestream) {
 
 	/*
 	 * an alternate/simplified method to setup the flags
-	 options.c_cflag = BAUDRATE | CS8 | CLOCAL | CREAD;		//<Set baud rate
+	 //options.c_cflag = BAUDRATE | CS8 | CLOCAL | CREAD;		//<Set baud rate JJ
+	 options.c_cflag = BAUDRATE | CS5 | CLOCAL | CREAD;		//<Set baud rate
 	 options.c_iflag = IGNPAR;
 	 options.c_oflag = 0;
 	 options.c_lflag = 0;
@@ -195,7 +196,7 @@ int rpi_uart_send_newline(int * filestream) {
 	return retval;
 }
 
-int rpi_uart_receive_bytes(int * filestream, int * rx_length, char * rx_buffer,
+int rpi_uart_receive_bytes(int * filestream, int * rx_length, unsigned char * rx_buffer,
 		const int BUFFERMAXSIZE) {
 
 	// CHECK FOR ANY RX BYTES
