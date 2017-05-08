@@ -18,7 +18,7 @@
 #define true 1
 #define false 0
 
-#define BUFFERSIZE 32 
+#define BUFFERSIZE 32  //read 32 bytes from nrf24 Module
 
 extern char MODEMDEVICE[BUFFERSIZE];
 
@@ -35,18 +35,12 @@ int main() {
 	//const int BUFFERSIZE = 1024;
 
 	char buffer[BUFFERSIZE];
-	unsigned char rx_buffer[BUFFERSIZE];
+	char rx_buffer[BUFFERSIZE];
 
 	// sort through the options and parameters received from the command line
 	int c = 0;
 	opterr = 0;
 
-	//JJ
-	//insertDataSQL(poids);
-	//	debugTestSQL(76);
-
-	//	memset(MODEMDEVICE, '\0', sizeof(MODEMDEVICE));
-	//	strcpy(MODEMDEVICE, argv[argc - 1]);
 	strcpy(MODEMDEVICE, "/dev/ttyS1");
 
 
@@ -63,45 +57,42 @@ int main() {
 
 		int buffer_position = 0;
 		int rx_byte_count = 0;
-		int i = 0;
+		int i = 0; 
+		int gewicht,oudgewicht,gram;
 		while (exit_program == false) {
 
 			rx_byte_count = rpi_uart_receive_bytes(&uart0_filestream,
 					&rx_byte_count, rx_buffer, BUFFERSIZE);
 
 			if (rx_byte_count > 0) {
+				//the first two bytes of every 32 bytes send, are 0 and 1
+				//since for a reason unknown to me, I got garbage bytes, I use "01" to filter the good records
 
-				//				if ((buffer_position + rx_byte_count) > BUFFERSIZE) {
-				//					buffer_position = 0; // reset to start writing at the beginning of the buffer again
-				//					printf("buffer position set to zero");
-				//				}
-
-				//			for (i = 0; i < rx_byte_count; i++) {
-				//				buffer[buffer_position++] = rx_buffer[i];
-				//			}
-
-				//for (i = 0; i < (buffer_position + rx_byte_count); i++) {
-				if ((rx_buffer[0]=0x01) && (rx_buffer[1]==0xab)){
-					printf("nieuwe lijn\n");
-					for (i = 0; i < BUFFERSIZE; i++) 
+				if ((rx_buffer[0]=='0') && (rx_buffer[1]=='1')){
+					for (i = 0; i < BUFFERSIZE; ++i) 
 					{
 						printf("%c", rx_buffer[i]);
 					}
+					printf("\n");
+					//5 bytes are reserved for weight 100,99 ->  100 kilogram and 99 gram 
+					gewicht=100*(rx_buffer[4]-48)+10*(rx_buffer[5]-48)+rx_buffer[6]-48;  
+					gram=(rx_buffer[7]-48)*10+rx_buffer[6];
+					if (gewicht != oudgewicht)
+						insertDataSQL(gewicht);
+					oudgewicht=gewicht;
+					printf("gewicht=%d.%d\n",gewicht,gram);
 				}
-				printf("\n");
-
-				//		insertDataSQL(buffer[1]);
 			}
-			}
-
-			if (DEBUG) {
-				printf("finished.  The party's over!\n\n");
-			}
-
-			// Don't forget to clean up
-			rpi_uart_close(&uart0_filestream);
 		}
-		return 0;
+
+		if (DEBUG) {
+			printf("finished.  The party's over!\n\n");
+		}
+
+		// Don't forget to clean up
+		rpi_uart_close(&uart0_filestream);
 	}
+	return 0;
+}
 
 

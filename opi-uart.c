@@ -196,7 +196,7 @@ int rpi_uart_send_newline(int * filestream) {
 	return retval;
 }
 
-int rpi_uart_receive_bytes(int * filestream, int * rx_length, unsigned char * rx_buffer,
+int rpi_uart_receive_bytes(int * filestream, int * rx_length, char * rx_buffer,
 		const int BUFFERMAXSIZE) {
 
 	// CHECK FOR ANY RX BYTES
