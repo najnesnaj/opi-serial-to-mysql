@@ -36,7 +36,7 @@ int main() {
 
 	char buffer[BUFFERSIZE];
 	char rx_buffer[BUFFERSIZE];
-
+        char weight[5];
 	// sort through the options and parameters received from the command line
 	int c = 0;
 	opterr = 0;
@@ -75,8 +75,12 @@ int main() {
 					}
 					printf("\n");
 					//5 bytes are reserved for weight 100,99 ->  100 kilogram and 99 gram 
-					gewicht=100*(rx_buffer[4]-48)+10*(rx_buffer[5]-48)+rx_buffer[6]-48;  
-					gram=(rx_buffer[7]-48)*10+rx_buffer[6];
+					weight[0]=rx_buffer[4];
+					weight[1]=rx_buffer[5];
+					weight[2]=rx_buffer[6];
+					weight[3]=rx_buffer[7];
+					weight[4]=rx_buffer[8];
+					gewicht = atoi(weight);
 					if (gewicht != oudgewicht)
 						insertDataSQL(gewicht);
 					oudgewicht=gewicht;
