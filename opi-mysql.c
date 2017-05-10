@@ -58,3 +58,37 @@ void insertDataSQL(int weight) {
 	mysql_free_result(res);
 	mysql_close(conn);
 }
+
+
+//database = metingen
+//table = powerusage
+//field = datum, current 
+
+
+void insertCurrentSQL(int current) {
+        char kompleet[200];
+        sprintf(kompleet,"insert into powerusage (datum, current) values (UTC_TIMESTAMP,%d)",current);
+        MYSQL *conn;
+        MYSQL_RES *res;
+        MYSQL_ROW row;
+        char *server = "localhost";
+        char *user = "stm8";
+        char *password = "stm8"; /* set me first */
+        char *database = "metingen";
+        conn = mysql_init(NULL);
+        /* Connect to database */
+        if (!mysql_real_connect(conn, server, user, password, database, 0, NULL, 0)) {
+                fprintf(stderr, "%s\n", mysql_error(conn));
+                exit(1);
+        }
+        //mysql_query(conn, "insert into gewicht (datum, gewicht) values (UTC_TIMESTAMP, 88)");
+        mysql_query(conn, kompleet);
+        /* close connection */
+        res = mysql_use_result(conn);
+        mysql_free_result(res);
+        mysql_close(conn);
+}
+
+
+
+

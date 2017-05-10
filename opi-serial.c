@@ -37,6 +37,7 @@ int main() {
 	char buffer[BUFFERSIZE];
 	char rx_buffer[BUFFERSIZE];
         char weight[5];
+        char current[2];
 	// sort through the options and parameters received from the command line
 	int c = 0;
 	opterr = 0;
@@ -59,6 +60,7 @@ int main() {
 		int rx_byte_count = 0;
 		int i = 0; 
 		int gewicht,oudgewicht,gram;
+int stroom,oudestroom;
 		while (exit_program == false) {
 
 			rx_byte_count = rpi_uart_receive_bytes(&uart0_filestream,
@@ -67,7 +69,7 @@ int main() {
 			if (rx_byte_count > 0) {
 				//the first two bytes of every 32 bytes send, are 0 and 1
 				//since for a reason unknown to me, I got garbage bytes, I use "01" to filter the good records
-
+//if received data is weight measurement
 				if ((rx_buffer[0]=='0') && (rx_buffer[1]=='1')){
 					for (i = 0; i < BUFFERSIZE; ++i) 
 					{
@@ -86,6 +88,21 @@ int main() {
 					oudgewicht=gewicht;
 					printf("gewicht=%d.%d\n",gewicht,gram);
 				}
+//if received data is a current measurement
+                                if ((rx_buffer[0]=='a') && (rx_buffer[1]=='c')){
+                                        for (i = 0; i < BUFFERSIZE; ++i)
+                                        {
+                                                printf("%c", rx_buffer[i]);
+                                        }
+                                        printf("\n");
+                                        current[0]=rx_buffer[2];
+                                        current[1]=rx_buffer[3];
+                                        stroom = atoi(current);
+                                        if (stroom != oudoudestroom)
+                                               insertCurrentSQL(stroom);
+                                        oudestroom=stroom;
+                                        printf("stroom=%d\n",stroom);
+                                }
 			}
 		}
 
