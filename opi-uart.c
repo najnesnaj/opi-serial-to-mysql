@@ -15,7 +15,7 @@
 //#define BAUDRATE B9600 //JJ
 #define BAUDRATE B115200 
 
-extern int DEBUG;
+int DEBUG;
 
 #define BUFFERSIZE 1024
 //#define MODEMDEVICE "/dev/ttyS1" // default file to access orange pi GPIO UART

@@ -3,5 +3,5 @@
 
 void debugTestSQL(int);
 void insertDataSQL(int);
-void insertCurrentSQL(int)
+void insertCurrentSQL(int);
 #endif // RPI_MYSQL_H

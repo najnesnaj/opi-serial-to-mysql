@@ -20,11 +20,11 @@
 
 #define BUFFERSIZE 32  //read 32 bytes from nrf24 Module
 
-extern char MODEMDEVICE[BUFFERSIZE];
+//extern char MODEMDEVICE[BUFFERSIZE];
 
 // global debug flag
 // can be set with -d cmd line parameter option
-int DEBUG = 0; // set to 0 to disable debugging printf()s
+//int DEBUG = 0; // set to 0 to disable debugging printf()s
 
 int main() {
 
@@ -42,7 +42,7 @@ int main() {
 	int c = 0;
 	opterr = 0;
 
-	strcpy(MODEMDEVICE, "/dev/ttyS1");
+//	strcpy(MODEMDEVICE, "/dev/ttyS1");
 
 
 	// setup the serial port and get filedescriptor for accessing the UART
@@ -98,7 +98,7 @@ int stroom,oudestroom;
                                         current[0]=rx_buffer[2];
                                         current[1]=rx_buffer[3];
                                         stroom = atoi(current);
-                                        if (stroom != oudoudestroom)
+                                        if (stroom != oudestroom)
                                                insertCurrentSQL(stroom);
                                         oudestroom=stroom;
                                         printf("stroom=%d\n",stroom);
@@ -106,9 +106,9 @@ int stroom,oudestroom;
 			}
 		}
 
-		if (DEBUG) {
-			printf("finished.  The party's over!\n\n");
-		}
+	//	if (DEBUG) {
+	//		printf("finished.  The party's over!\n\n");
+	//	}
 
 		// Don't forget to clean up
 		rpi_uart_close(&uart0_filestream);
