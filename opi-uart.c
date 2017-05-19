@@ -18,8 +18,8 @@
 int DEBUG;
 
 #define BUFFERSIZE 1024
-//#define MODEMDEVICE "/dev/ttyS1" // default file to access orange pi GPIO UART
-char MODEMDEVICE[BUFFERSIZE];
+#define MODEMDEVICE "/dev/ttyAMA0" // default file to access orange pi GPIO UART
+//char MODEMDEVICE[BUFFERSIZE];
 
 // raspberry pi uart functions
 
@@ -32,7 +32,7 @@ int rpi_uart_setup(int * filestream) {
 
 	if (DEBUG) {
 		printf("\nserial port settings BEFORE running setup function:\n");
-		system("stty -F /dev/ttyS1");
+		system("stty -F /dev/ttyAMA0");
 		printf("\n\n");
 	}
 
@@ -143,7 +143,7 @@ int rpi_uart_setup(int * filestream) {
 
 	if (DEBUG) {
 		printf("serial port settings AFTER running setup function:\n");
-		system("stty -F /dev/ttyS1");
+		system("stty -F /dev/ttyAMA0");
 		printf("\n\n");
 	}
 

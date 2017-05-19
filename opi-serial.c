@@ -42,7 +42,7 @@ int main() {
 	int c = 0;
 	opterr = 0;
 
-//	strcpy(MODEMDEVICE, "/dev/ttyS1");
+//	strcpy(MODEMDEVICE, "/dev/ttyAMA0");
 
 
 	// setup the serial port and get filedescriptor for accessing the UART
@@ -68,40 +68,21 @@ int stroom,oudestroom;
 
 			if (rx_byte_count > 0) {
 				//the first two bytes of every 32 bytes send, are 0 and 1
-				//since for a reason unknown to me, I got garbage bytes, I use "01" to filter the good records
-//if received data is weight measurement
-				if ((rx_buffer[0]=='0') && (rx_buffer[1]=='1')){
-					for (i = 0; i < BUFFERSIZE; ++i) 
-					{
-						printf("%c", rx_buffer[i]);
-					}
-					printf("\n");
-					//5 bytes are reserved for weight 100,99 ->  100 kilogram and 99 gram 
-					weight[0]=rx_buffer[4];
-					weight[1]=rx_buffer[5];
-					weight[2]=rx_buffer[6];
-					weight[3]=rx_buffer[7];
-					weight[4]=rx_buffer[8];
-					gewicht = atoi(weight);
-					if (gewicht != oudgewicht)
-						insertDataSQL(gewicht);
-					oudgewicht=gewicht;
-					printf("gewicht=%d.%d\n",gewicht,gram);
-				}
-//if received data is a current measurement
                                 if ((rx_buffer[0]=='a') && (rx_buffer[1]=='c')){
                                         for (i = 0; i < BUFFERSIZE; ++i)
                                         {
                                                 printf("%c", rx_buffer[i]);
                                         }
-                                        printf("\n");
-                                        current[0]=rx_buffer[2];
-                                        current[1]=rx_buffer[3];
-                                        stroom = atoi(current);
-                                        if (stroom != oudestroom)
-                                               insertCurrentSQL(stroom);
-                                        oudestroom=stroom;
-                                        printf("stroom=%d\n",stroom);
+					   weight[0]=rx_buffer[4];
+					   weight[1]=rx_buffer[5]; 
+					   weight[2]=rx_buffer[6]; 
+					   weight[3]=rx_buffer[7]; 
+					   gewicht = atoi(weight); 
+					   printf("gewicht %d\n",gewicht);
+                                           printf("\n");
+					   if (gewicht!=oudgewicht)
+					   insertDataSQL(gewicht);
+					   oudgewicht=gewicht;
                                 }
 			}
 		}
