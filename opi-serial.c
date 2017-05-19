@@ -68,11 +68,11 @@ int stroom,oudestroom;
 
 			if (rx_byte_count > 0) {
 				//the first two bytes of every 32 bytes send, are 0 and 1
-                                if ((rx_buffer[0]=='a') && (rx_buffer[1]=='c')){
-                                        for (i = 0; i < BUFFERSIZE; ++i)
-                                        {
-                                                printf("%c", rx_buffer[i]);
-                                        }
+                                if ((rx_buffer[0]=='a') && (rx_buffer[1]=='c')&&(rx_buffer[2]=='c')&&(rx_buffer[3]=='c')){
+                                     //   for (i = 0; i < BUFFERSIZE; ++i)
+                                      //  {
+                                       //         printf("%c", rx_buffer[i]);
+                                       // }
 					   weight[0]=rx_buffer[4];
 					   weight[1]=rx_buffer[5]; 
 					   weight[2]=rx_buffer[6]; 
